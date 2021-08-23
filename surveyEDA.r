@@ -1,3 +1,13 @@
+# Universidade Federal de Campina Grande
+# Aluno: Nathan Fernandes Pedroza
+# Disciplina: Metodologia Científica
+# Data: 18/08/2021
+# Survey a respeito da eficácia da plataforma Stack Oveflow
+
+# Hipótese a ser testada:
+# Testar a qualidade e eficiência do Stack Overflow na aprendizagem e solução 
+# de problemas para estudantes e profissionais de computação.
+
 library(e1071)
 library(utils)
 library(skimr)
@@ -55,6 +65,3 @@ skewness(table(df$experiencia))
 cor(table(df$aprender), table(df$utiliza), method="pearson")
 cor(table(df$niveis), table(df$experiencia), method="pearson")
 cor(table(df$aprender), table(df$documentacao), method="pearson")
-
-cor(table(df$aprender), table(df$idades), method="pearson")
-
