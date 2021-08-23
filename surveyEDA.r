@@ -1,14 +1,9 @@
 library(e1071)
 library(utils)
 library(skimr)
-# library(RCurl)
+library(corrplot)
 
 df <- read.csv("https://raw.githubusercontent.com/nathanzilgo/metodologia-survey/master/survey.csv")
-# df <- data.frame(idades, periodo, trabalha, projeto, utiliza, aprender, problema,niveis,documentacao,contribui,experiencia)
-# write.csv(df, file ="survey.csv", row.names=FALSE)
-
-transform(table(df$idades), FreqReal = Freq/40, FreqAcum = cumsum(Freq), FreqRelAcum = cumsum(Freq)/40)
-transform(table(df$periodo), FreqReal = Freq/40, FreqAcum = cumsum(Freq), FreqRelAcum = cumsum(Freq)/40)
 
 print("Sumario do Survey:")
 summary(df)
@@ -16,22 +11,50 @@ summary(df)
 print("Mais informações com o pacote skimr:")
 skim(df)
 
+print("Agrupando por alunos que trabalham ou não:")
 df %>%
-  dplyr::group_by(df$trabalha)
+  dplyr::group_by(trabalha) %>%
   skim()
-  
-df %>%
-  dplyr::group_by(df$projeto)
-  skim()
+print("Com isso, é possível notar que a média da frequencia de utilização das pessoas
+      que trabalham é de 4.14, enquanto que os que não estão, é de 3.89")
+print("Pessoas que trabalham aprendem mais com o Stack Overflow (3.95) do que
+      as que não trabalham (3.58)")
 
-par(mfrow=c(2,3))
-table(df$trabalha)
+print("Agrupando por alunos que atuam em projetos academicos ou não:")    
+df %>%
+  dplyr::group_by(projeto) %>%
+  skim()
+print("Com isso, é possível notar que a média da frequencia de utilização das pessoas
+      que estão em projeto é de 4.54, enquanto que os que não estão, é de 3.78")
+print("Não é notável uma diferença substancial quanto ao aprendizado dos usuários do
+      StOv que estão ou não em projetos")
+
+par(mfrow=c(2,3.5))
+
 barplot(table(df$idades), main = "dist idades")
 barplot(table(df$periodo), main = "dist periodo")
-barplot(table(df$trabalha), main = "dist trabalha")
-barplot(table(df$projeto), main = "dist projeto")
-pie(table(df$periodo), main = "dist periodo 2", radius = 1)
+barplot(table(df$aprender), main = "dist aprender")
+barplot(table(df$experiencia), main = "dist experiencia")
+barplot(table(df$utiliza), main = "dist utiliza")
+barplot(table(df$experiencia), main = "dist experiencia")
 
-skewness(table(df$documentacao))  
+pie(table(df$trabalha), main = "dist trabalha", radius = 1) 
+pie(table(df$projeto), main = "dist projeto", radius = 1)
+
+print("Com os gráficos e o summary, é possível notar que a maioria dos alunos no survey
+      tem uma boa experiencia (media de 4.12), a plataforma os incentiva a aprender
+      (media de 3.78) e a utilizam com uma ótima frequência (média de 4.03)")
+
+# Medida de simetria para verificar se a média dos dados é menor que a mediana:
+print("Skewness documentacao:")
+skewness(table(df$documentacao))
+
+print("Skewness experiencia:")
+skewness(table(df$experiencia))
 
 cor(table(df$aprender), table(df$utiliza), method="pearson")
+cor(table(df$niveis), table(df$experiencia), method="pearson")
+cor(table(df$aprender), table(df$documentacao), method="pearson")
+
+cor(table(df$aprender), table(df$idades), method="pearson")
+
