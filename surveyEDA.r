@@ -13,7 +13,7 @@ library(utils)
 library(skimr)
 library(corrplot)
 
-df <- read.csv("https://raw.githubusercontent.com/nathanzilgo/metodologia-survey/master/survey.csv")
+df <- read.csv("./survey.csv")
 
 print("Sumario do Survey:")
 summary(df)
